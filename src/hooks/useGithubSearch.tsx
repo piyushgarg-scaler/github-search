@@ -37,5 +37,5 @@ export const useGithubSearch = (q?: string, options?: Options) => {
     })();
   }, [q, options?.page]);
 
-  return { items, isLoading: loading, hasMore, totalResults };
+  return { items, isLoading: loading, hasMore, totalResults, clear };
 };

@@ -5,6 +5,29 @@ import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "./hooks/useDebounce";
 import { useGithubSearch } from "./hooks/useGithubSearch";
 
+/*
+Challenges:
+1. User should not scroll to the very end to fetch result
+Sol - If I am almost at the end, keep the next results ready
+
+2. What is there is an Error?
+Solution - Can you first disable the Intersection Observer, Show
+the user that something went wrong UI
+
+3. What if user keeps on scrolling?
+Sol - At some point you can have 1_00_000 items in array which
+is not memory efficent.
+
+4. Reset States when search query changes
+
+5. Improve the list of repos by creating a custom noice component
+
+6. Improve the loading style
+
+⭐️ Bonus: Can you implement type a head based on the results that you currently have in seach results
+Example: Autocomplete
+ */
+
 function App() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -13,12 +36,7 @@ function App() {
 
   const observerTarget = useRef(null);
 
-  const { items, isLoading, totalResults, hasMore } = useGithubSearch(
-    delayedSearch,
-    { page }
-  );
-
-  console.log("Current Page Number", page);
+  const { items, isLoading } = useGithubSearch(delayedSearch, { page });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
