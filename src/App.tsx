@@ -24,6 +24,8 @@ is not memory efficent.
 
 6. Improve the loading style
 
+7. Create a generic hook for Intersection Observer
+
 ⭐️ Bonus: Can you implement type a head based on the results that you currently have in seach results
 Example: Autocomplete
  */
