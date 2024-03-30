@@ -1,12 +1,15 @@
 import { Input } from "@/components/ui/input";
 import "./App.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDebounce } from "./hooks/useDebounce";
 import { useGithubSearch } from "./hooks/useGithubSearch";
+import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 /*
 Challenges:
+DONE
 1. User should not scroll to the very end to fetch result
 Sol - If I am almost at the end, keep the next results ready
 
@@ -40,11 +43,19 @@ function App() {
 
   const { items, isLoading } = useGithubSearch(delayedSearch, { page });
 
+  const itemsLen = useMemo(() => {
+      return items.length;
+  }, [items]);  
+
+  const shouldIntersect = useMemo(() => {
+    return itemsLen !==0;
+  }, [itemsLen]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          if (items.length !== 0) setPage((prev) => prev + 1);
+          if (shouldIntersect) setPage((prev) => prev + 1);
         }
       },
       { threshold: 1 }
@@ -55,7 +66,7 @@ function App() {
     return () => {
       if (observerTarget.current) observer.unobserve(observerTarget.current);
     };
-  }, [observerTarget, items]);
+  }, [observerTarget, shouldIntersect]);
 
   return (
     <div className="w-[100vw] h-[100vh] flex items-center justify-center">
@@ -70,10 +81,20 @@ function App() {
         </div>
         <div className="max-h-[300px] overflow-y-auto mt-5">
           <ul>
-            {items.map((item) => (
-              <li key={`${item.node_id}`}>{item.full_name}</li>
-            ))}
-            <div ref={observerTarget} />
+            {items.map((item, idx) => {
+              if(idx === itemsLen-4){
+                return(
+                  <div key={`${item.node_id}-${idx}`}>
+                    <li>{item.full_name}</li>
+                    <div ref={observerTarget} />
+                  </div>
+                )
+              }
+              
+              return(
+              <li key={`${item.node_id}-${idx}`}>{item.full_name}</li>
+              )
+            })}
           </ul>
         </div>
       </div>
