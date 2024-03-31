@@ -64,8 +64,6 @@ function App() {
    return { changed: page*PER_PAGE_DATA > DATA_OFFSET}; 
   }, [page]);
 
-  console.log('items len: ', itemsLen);
-
   useEffect(() => {
     if(isIntersecting){
       setPage((prev) => prev + 1);
@@ -88,20 +86,10 @@ function App() {
     if(checkTopRef.changed){
       const offsetHeight = ulEleRef.current?.querySelector('li')?.clientHeight;
       if(offsetHeight !== undefined){
-        const scrollPosition = offsetHeight*PER_PAGE_DATA*2;
-
-        // Set scrollTop to the calculated scroll position
-        scrollUp(scrollPosition);
+        scrollUp(offsetHeight*PER_PAGE_DATA*2);
       }
-
-      // setTopPage((prev) => prev + 1);
     }
   }, [checkTopRef]);
-
-  const handleSearchChange = (e: React.SyntheticEvent) => {
-    const value = (e.currentTarget as HTMLInputElement).value; 
-    setSearch(value);
-  }
 
   return (
     <div className="w-[100vw] h-[100vh] flex items-center justify-center">
@@ -110,7 +98,7 @@ function App() {
           <Input
             disabled={isLoading}
             value={search}
-            onChange={handleSearchChange}
+            onChange={(e) => setSearch(e.currentTarget.value)}
             placeholder="Search someting.."
           />
         </div>
