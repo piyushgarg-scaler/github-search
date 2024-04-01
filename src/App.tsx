@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import "./App.css";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDebounce } from "./hooks/useDebounce";
 import { DATA_OFFSET, PER_PAGE_DATA, useGithubSearch } from "./hooks/useGithubSearch";
@@ -28,7 +28,7 @@ is not memory efficent. ( DONE )
 
 7. Create a generic hook for Intersection Observer ( DONE )
 
-⭐️ Bonus: Can you implement type a head based on the results that you currently have in seach results
+⭐️ Bonus: Can you implement type ahead based on the results that you currently have in seach results
 Example: Autocomplete
  */
 
